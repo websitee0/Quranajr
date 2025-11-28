@@ -1,529 +1,57 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>حفاظ المبادئ / بكم نرتقي</title>
-  <link rel="icon" href="I.png" sizes="32x32" type="image/png">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    .glass {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(6px);
-    }
-
-    .progress-bg {
-      background: #e6e6e6;
-      height: 6px;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      background: #0b49f5;
-      height: 100%;
-      width: 0%;
-      transition: width 400ms ease;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>اختبار Firestore</title>
 </head>
+<body>
+  <h1>اختبار Firestore</h1>
+  <button id="add">إضافة مستند تجريبي</button>
+  <pre id="log"></pre>
 
-<body class="min-h-screen bg-gray-50 text-gray-800 font-sans">
-
-  <div class="min-h-screen" id="app">
-    <nav class="bg-gray-900 text-gray-50 sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="bg-amber-500 p-2 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6" />
-            </svg>
-          </div>
-          <div>
-            <h1 class="text-xl font-bold">متابعة حفاظ المبادئ</h1>
-            <p class="text-gray-400 text-sm">حفظ القرآن الكريم كاملاً</p>
-          </div>
-        </div>
-        <div id="admin-area"></div>
-      </div>
-    </nav>
-
-    <!-- Cloud Status -->
-    <div id="cloudStatus" class="max-w-7xl mx-auto px-6 py-2 hidden">
-      <div class="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
-        <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-            clip-rule="evenodd" />
-        </svg>
-        <span class="text-sm font-medium text-green-800">متصل بالسحابة ✅ البيانات محفوظة للجميع</span>
-      </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center p-4 z-50">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-        <div class="text-center mb-6">
-          <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-700" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 11c0-1.105.895-2 2-2s2 .895 2 2v1H8v-1c0-1.105.895-2 2-2s2 .895 2 2z" />
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold mb-2"><span class="text-gray-500">Sign in</span></h2>
-          <p class="text-gray-600">أدخل كلمة المرور للوصول إلى لوحة التحكم</p>
-        </div>
-
-        <input id="adminPassword" type="password" placeholder="كلمة المرور"
-          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-amber-500 focus:outline-none mb-4">
-
-        <div class="flex gap-3">
-          <button id="loginBtn"
-            class="flex-1 bg-amber-600 hover:bg-amber-700 text-gray-900 py-3 rounded-lg font-semibold">دخول</button>
-          <button id="loginCancel"
-            class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-900 py-3 rounded-lg font-semibold">إلغاء</button>
-        </div>
-      </div>
-    </div>
-
-    <main class="max-w-7xl mx-auto p-6">
-      <div id="adminHeader" class="hidden bg-gray-900 rounded-xl shadow-lg p-6 mb-6 text-gray-100">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-            </svg>
-            <span class="font-semibold">لوحة التحكم</span>
-          </div>
-          <button id="addStudentBtn"
-            class="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-lg font-semibold">إضافة
-            طالب</button>
-        </div>
-      </div>
-
-      <div id="viewerNotice" class="bg-amber-50 border-r-4 border-amber-600 rounded-lg p-5 mb-6">
-        <div class="flex items-start gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-700 mt-1" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <div>
-            <h3 class="font-semibold text-gray-900 mb-1">وضع المشاهدة</h3>
-            <p class="text-gray-700 text-sm">يمكنك مشاهدة تقييمات الطلاب فقط. للتعديل، يجب تسجيل الدخول كمسؤول.</p>
-          </div>
-        </div>
-      </div>
-
-      <div id="statsGrid" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6"></div>
-
-      <div id="studentsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-      <div id="emptyState" class="hidden text-center py-16">
-        <div class="bg-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-500" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 1.79-8 4v1h16v-1c0-2.21-3.582-4-8-4z" />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-800 mb-2">لا يوجد طلاب</h3>
-        <p class="text-gray-600 mb-4">قم بإضافة طلاب جدد للبدء في متابعة تقدمهم</p>
-        <button id="addFirstBtn"
-          class="hidden bg-gray-600 hover:bg-gray-700 text-gray-100 px-6 py-3 rounded-lg font-semibold">إضافة أول
-          طالب</button>
-      </div>
-    </main>
-  </div>
+  <!-- Firebase compat -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
 
   <script>
-    const quranSurahs = [
-      { n: "الفاتحة", p: 1 }, { n: "البقرة", p: 48 }, { n: "آل عمران", p: 37 }, { n: "النساء", p: 30 },
-      { n: "المائدة", p: 19 }, { n: "الأنعام", p: 27 }, { n: "الأعراف", p: 26 }, { n: "الأنفال", p: 10 },
-      { n: "التوبة", p: 22 }, { n: "يونس", p: 11 }, { n: "هود", p: 15 }, { n: "يوسف", p: 13 },
-      { n: "الرعد", p: 7 }, { n: "إبراهيم", p: 10 }, { n: "الحجر", p: 6 }, { n: "النحل", p: 14 },
-      { n: "الإسراء", p: 12 }, { n: "الكهف", p: 12 }, { n: "مريم", p: 11 }, { n: "طه", p: 12 },
-      { n: "الأنبياء", p: 11 }, { n: "الحج", p: 10 }, { n: "المؤمنون", p: 9 }, { n: "النور", p: 10 },
-      { n: "الفرقان", p: 10 }, { n: "الشعراء", p: 11 }, { n: "النمل", p: 9 }, { n: "القصص", p: 11 },
-      { n: "العنكبوت", p: 8 }, { n: "الروم", p: 8 }, { n: "لقمان", p: 4 }, { n: "السجدة", p: 3 },
-      { n: "الأحزاب", p: 10 }, { n: "سبأ", p: 6 }, { n: "فاطر", p: 5 }, { n: "يس", p: 5 },
-      { n: "الصافات", p: 5 }, { n: "ص", p: 3 }, { n: "الزمر", p: 8 }, { n: "غافر", p: 9 },
-      { n: "فصلت", p: 6 }, { n: "الشورى", p: 5 }, { n: "الزخرف", p: 5 }, { n: "الدخان", p: 3 },
-      { n: "الجاثية", p: 3 }, { n: "الأحقاف", p: 3 }, { n: "محمد", p: 4 }, { n: "الفتح", p: 4 },
-      { n: "الحجرات", p: 3 }, { n: "ق", p: 3 }, { n: "الذاريات", p: 3 }, { n: "الطور", p: 3 },
-      { n: "النجم", p: 2 }, { n: "القمر", p: 3 }, { n: "الرحمن", p: 3 }, { n: "الواقعة", p: 3 },
-      { n: "الحديد", p: 4 }, { n: "المجادلة", p: 2 }, { n: "الحشر", p: 3 }, { n: "الممتحنة", p: 3 },
-      { n: "الصف", p: 2 }, { n: "الجمعة", p: 2 }, { n: "المنافقون", p: 2 }, { n: "التغابن", p: 2 },
-      { n: "الطلاق", p: 2 }, { n: "التحريم", p: 2 }, { n: "الملك", p: 3 }, { n: "القلم", p: 3 },
-      { n: "الحاقة", p: 3 }, { n: "المعارج", p: 2 }, { n: "نوح", p: 2 }, { n: "الجن", p: 2 },
-      { n: "المزمل", p: 2 }, { n: "المدثر", p: 2 }, { n: "القيامة", p: 2 }, { n: "الإنسان", p: 2 },
-      { n: "المرسلات", p: 2 }, { n: "النبأ", p: 2 }, { n: "النازعات", p: 2 }, { n: "عبس", p: 2 },
-      { n: "التكوير", p: 1 }, { n: "الإنفطار", p: 1 }, { n: "المطففين", p: 2 }, { n: "الانشقاق", p: 1 },
-      { n: "البروج", p: 1 }, { n: "الطارق", p: 1 }, { n: "الأعلى", p: 1 }, { n: "الغاشية", p: 1 },
-      { n: "الفجر", p: 2 }, { n: "البلد", p: 1 }, { n: "الشمس", p: 1 }, { n: "الليل", p: 1 },
-      { n: "الضحى", p: 1 }, { n: "الشرح", p: 1 }, { n: "التين", p: 1 }, { n: "العلق", p: 1 },
-      { n: "القدر", p: 1 }, { n: "البينة", p: 2 }, { n: "الزلزلة", p: 1 }, { n: "العاديات", p: 1 },
-      { n: "القارعة", p: 1 }, { n: "التكاثر", p: 1 }, { n: "العصر", p: 1 }, { n: "الهمزة", p: 1 },
-      { n: "الفيل", p: 1 }, { n: "قريش", p: 1 }, { n: "الماعون", p: 1 }, { n: "الكوثر", p: 1 },
-      { n: "الكافرون", p: 1 }, { n: "النصر", p: 1 }, { n: "المسد", p: 1 }, { n: "الإخلاص", p: 1 },
-      { n: "الفلق", p: 1 }, { n: "الناس", p: 1 }
-    ];
+    const log = (msg) => {
+      document.getElementById('log').textContent += msg + "\n";
+      console.log(msg);
+    };
 
-    const ADMIN_PASSWORD = "spsadmin";
-    let isAdmin = false;
-    let students = [];
-    let cloudConnected = false;
-    let db = null;
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7Wfg0e28Rwimo961pEQ47ADVOEqRTuOg",
+      authDomain: "sps123-39a27.firebaseapp.com",
+      projectId: "sps123-39a27",
+      storageBucket: "sps123-39a27.firebasestorage.app",
+      messagingSenderId: "205575189302",
+      appId: "1:205575189302:web:11463a8f03eddc3193b997",
+      measurementId: "G-5NEDDQW6DB"
+    };
 
-    // DOM Elements
-    const elements = {};
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    const teacherGrades = [
-      { value: 100, label: "ممتاز ⭐⭐⭐⭐⭐", color: "text-green-600" },
-      { value: 90, label: "جيد جداً ⭐⭐⭐⭐", color: "text-green-500" },
-      { value: 80, label: "جيد ⭐⭐⭐", color: "text-blue-500" },
-      { value: 70, label: "مقبول ⭐⭐", color: "text-yellow-500" },
-      { value: 60, label: "ضعيف ⭐", color: "text-orange-500" },
-      { value: 50, label: "سيء", color: "text-red-500" }
-    ];
+    // قراءة تجريبية
+    db.collection("quran-students").limit(1).get()
+      .then(() => {
+        log("✅ الاتصال بـ Firestore ناجح");
+      })
+      .catch(err => {
+        log("❌ خطأ في الاتصال بـ Firestore: " + err.message);
+      });
 
-    // Initialize DOM elements after DOM is loaded
-    function initElements() {
-      elements.adminArea = document.getElementById("admin-area");
-      elements.cloudStatus = document.getElementById("cloudStatus");
-      elements.loginModal = document.getElementById("loginModal");
-      elements.adminPassword = document.getElementById("adminPassword");
-      elements.loginBtn = document.getElementById("loginBtn");
-      elements.loginCancel = document.getElementById("loginCancel");
-      elements.adminHeader = document.getElementById("adminHeader");
-      elements.viewerNotice = document.getElementById("viewerNotice");
-      elements.addStudentBtn = document.getElementById("addStudentBtn");
-      elements.addFirstBtn = document.getElementById("addFirstBtn");
-      elements.studentsGrid = document.getElementById("studentsGrid");
-      elements.statsGrid = document.getElementById("statsGrid");
-      elements.emptyState = document.getElementById("emptyState");
-    }
-
-    async function initFirebase() {
+    document.getElementById('add').onclick = async () => {
       try {
-        // ضع هنا إعدادات Firebase الخاصة بك
-        const firebaseConfig = {
-          apiKey: "AIzaSyC7Wfg0e28Rwimo961pEQ47ADVOEqRTuOg",
-          authDomain: "sps123-39a27.firebaseapp.com",
-          projectId: "sps123-39a27",
-          storageBucket: "sps123-39a27.firebasestorage.app",
-          messagingSenderId: "205575189302",
-          appId: "1:205575189302:web:11463a8f03eddc3193b997",
-          measurementId: "G-5NEDDQW6DB"
-        };
-
-        const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js');
-        const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js');
-
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-
-        // Test connection
-        await db.collection("quran-students").limit(1).get();
-        cloudConnected = true;
-        elements.cloudStatus.classList.remove("hidden");
-        console.log("✅ Firebase متصل");
+        const docRef = await db.collection("quran-students").add({
+          name: "طالب تجريبي",
+          createdAt: new Date().toISOString()
+        });
+        log("✅ تم إضافة مستند: " + docRef.id);
       } catch (e) {
-        console.log("❌ Firebase غير متاح، استخدام localStorage");
-        cloudConnected = false;
+        log("❌ خطأ عند الإضافة: " + e.message);
       }
-    }
-
-    function init() {
-      initElements();
-      initFirebase().then(() => {
-        loadStudents();
-        renderNav();
-        render();
-        attachListeners();
-      });
-    }
-
-    function loadStudents() {
-      if (cloudConnected && db) {
-        db.collection("quran-students").get().then((snapshot) => {
-          students = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          render();
-        }).catch(e => {
-          console.log("خطأ Firebase:", e);
-          loadLocalStudents();
-        });
-      } else {
-        loadLocalStudents();
-      }
-    }
-
-    function loadLocalStudents() {
-      const saved = localStorage.getItem("quranStudents");
-      if (saved) {
-        students = JSON.parse(saved);
-      }
-      render();
-    }
-
-    function saveStudents() {
-      if (cloudConnected && db) {
-        const batch = db.batch();
-        students.forEach(student => {
-          const docRef = db.collection("quran-students").doc(student.id.toString());
-          batch.set(docRef, student);
-        });
-        batch.commit().catch(e => {
-          console.log("خطأ حفظ Firebase:", e);
-          saveLocalStudents();
-        });
-      } else {
-        saveLocalStudents();
-      }
-    }
-
-    function saveLocalStudents() {
-      localStorage.setItem("quranStudents", JSON.stringify(students));
-    }
-
-    function renderNav() {
-      elements.adminArea.innerHTML = "";
-      if (isAdmin) {
-        const span = document.createElement("span");
-        span.className = "text-gray-300 text-sm";
-        span.textContent = "وضع مسؤول";
-
-        const logoutBtn = document.createElement("button");
-        logoutBtn.className = "bg-gray-800 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-lg ml-2";
-        logoutBtn.textContent = "تسجيل الخروج";
-        logoutBtn.onclick = () => { isAdmin = false; renderNav(); render(); };
-        elements.adminArea.append(span, logoutBtn);
-      } else {
-        const loginBtnNav = document.createElement("button");
-        loginBtnNav.className = "bg-gray-600 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-lg font-semibold";
-        loginBtnNav.textContent = "تسجيل دخول";
-        loginBtnNav.onclick = showLogin;
-        elements.adminArea.append(loginBtnNav);
-      }
-    }
-
-    function showLogin() {
-      elements.loginModal.classList.remove("hidden");
-      elements.loginModal.classList.add("flex");
-      elements.adminPassword.focus();
-    }
-
-    function hideLogin() {
-      elements.loginModal.classList.add("hidden");
-      elements.loginModal.classList.remove("flex");
-      elements.adminPassword.value = "";
-    }
-
-    function attachListeners() {
-      elements.loginBtn.onclick = () => {
-        if (elements.adminPassword.value === ADMIN_PASSWORD) {
-          isAdmin = true;
-          hideLogin();
-          renderNav();
-          render();
-        } else {
-          alert("كلمة المرور غير صحيحة");
-        }
-      };
-      elements.loginCancel.onclick = hideLogin;
-      elements.loginModal.onclick = (e) => {
-        if (e.target === elements.loginModal) hideLogin();
-      };
-      elements.addStudentBtn.onclick = addNewStudent;
-      elements.addFirstBtn.onclick = addNewStudent;
-    }
-
-    function addNewStudent() {
-      const surahState = {};
-      quranSurahs.forEach(s => surahState[s.n] = 0);
-
-      const newStudent = {
-        id: Date.now(),
-        name: "طالب جديد",
-        mem: surahState,
-        jalliLahn: 5,
-        khaffiLahn: 5,
-        teacherGrade: "جيد ⭐⭐⭐",
-        teacherGradeValue: 80
-      };
-
-      students.push(newStudent);
-      saveStudents();
-      render();
-    }
-
-    function updateStudent(id, field, value) {
-      students = students.map(s => {
-        if (s.id == id) {
-          const updated = { ...s };
-          if (field.startsWith("surah_")) {
-            const name = field.replace("surah_", "");
-            updated.mem[name] = Number(value);
-          } else if (field === "teacherGrade") {
-            const grade = teacherGrades.find(g => g.label === value);
-            updated.teacherGrade = value;
-            updated.teacherGradeValue = grade ? grade.value : 80;
-          } else {
-            updated[field] = value;
-          }
-          return updated;
-        }
-        return s;
-      });
-      saveStudents();
-      render();
-    }
-
-    function deleteStudent(id) {
-      if (!confirm("هل تريد حذف الطالب؟")) return;
-      students = students.filter(s => s.id != id);
-      saveStudents();
-      render();
-    }
-
-    function render() {
-      if (isAdmin) {
-        elements.adminHeader.classList.remove("hidden");
-        elements.viewerNotice.classList.add("hidden");
-      } else {
-        elements.adminHeader.classList.add("hidden");
-        elements.viewerNotice.classList.remove("hidden");
-      }
-      renderStats();
-      renderStudents();
-      elements.emptyState.classList.toggle("hidden", students.length > 0);
-    }
-
-    function renderStats() {
-      if (!students.length) {
-        elements.statsGrid.innerHTML = "";
-        return;
-      }
-      const total = students.length;
-      const avgScore = students.reduce((a, b) => a + (b.teacherGradeValue || 0), 0) / total;
-      elements.statsGrid.innerHTML = `
-    <div class="bg-white p-6 shadow rounded-xl border text-center">
-      <p class="text-gray-600 text-sm">عدد الطلاب</p>
-      <p class="text-3xl font-bold">${total}</p>
-    </div>
-    <div class="bg-white p-6 shadow rounded-xl border text-center">
-      <p class="text-gray-600 text-sm">متوسط التقدير</p>
-      <p class="text-3xl font-bold">${avgScore.toFixed(1)}</p>
-    </div>
-  `;
-    }
-
-    // باقي الدوال كما هي...
-    function renderSurahSection(student) {
-      return `
-    <details class="bg-gray-50 rounded-lg border p-4">
-      <summary class="cursor-pointer text-lg font-bold text-gray-800 mb-2">حفظ السور</summary>
-      <div class="max-h-64 overflow-y-auto mt-3 pr-2 space-y-3">
-        ${quranSurahs.map(surah => {
-        const memVal = student.mem[surah.n] || 0;
-        return `
-            <div class="border-b pb-2">
-              <div class="flex justify-between mb-1">
-                <span class="font-semibold text-gray-800">${surah.n}</span>
-                <span class="text-gray-600 text-sm">${memVal} / ${surah.p}</span>
-              </div>
-              ${isAdmin ? `
-                <select data-field="surah_${surah.n}" data-id="${student.id}" class="w-full border rounded px-3 py-2 bg-white">
-                  ${Array.from({ length: surah.p + 1 }, (_, i) => i).map(x =>
-          `<option value="${x}" ${x === memVal ? 'selected' : ''}>${x} صفحة</option>`
-        ).join('')}
-                </select>
-              ` : `
-                <div class="bg-gray-200 px-3 py-2 rounded text-gray-700 text-sm">${memVal} صفحة</div>
-              `}
-              <div class="progress-bg mt-1">
-                <div class="progress-bar" style="width:${(memVal / surah.p) * 100}%"></div>
-              </div>
-            </div>`;
-      }).join("")}
-      </div>
-    </details>
-  `;
-    }
-
-    function renderStudents() {
-      elements.studentsGrid.innerHTML = "";
-      students.forEach(student => {
-        const card = document.createElement("div");
-        card.className = "bg-white rounded-xl shadow border p-5";
-
-        const gradeInfo = teacherGrades.find(g => g.label === student.teacherGrade) || teacherGrades[2];
-
-        card.innerHTML = `
-      <div class="flex justify-between mb-4">
-        ${isAdmin ? `
-          <input type="text" value="${student.name}" data-field="name" data-id="${student.id}" class="bg-gray-100 border px-3 py-2 rounded w-1/2">
-        ` : `
-          <h2 class="text-xl font-bold">${student.name}</h2>
-        `}
-        <div class="text-right">
-          <p class="text-sm text-gray-500">تقدير من المعلم</p>
-          ${isAdmin ? `
-            <select data-field="teacherGrade" data-id="${student.id}" class="text-lg font-bold ${gradeInfo.color} w-full mt-1 border rounded px-2 py-2">
-              ${teacherGrades.map(g => `<option value="${g.label}" ${g.label === student.teacherGrade ? 'selected' : ''}>${g.label}</option>`).join('')}
-            </select>
-          ` : `
-            <p class="text-2xl font-bold ${gradeInfo.color}">${student.teacherGrade || 'جيد ⭐⭐⭐'}</p>
-          `}
-        </div>
-      </div>
-      ${renderSurahSection(student)}
-      <div class="grid grid-cols-2 gap-4 mt-6">
-        <div>
-          <label class="text-sm text-gray-700">اللحن الجلي</label>
-          ${isAdmin ? `
-            <select data-field="jalliLahn" data-id="${student.id}" class="w-full mt-1 border rounded px-2 py-2">
-              ${[5, 4, 3, 2, 1].map(x => `<option value="${x}" ${x === (student.jalliLahn || 5) ? 'selected' : ''}>${x}/5</option>`).join('')}
-            </select>
-          ` : `<div class="mt-1 bg-gray-200 rounded px-2 py-2">${(student.jalliLahn || 5)} / 5</div>`}
-        </div>
-        <div>
-          <label class="text-sm text-gray-700">اللحن الخفي</label>
-          ${isAdmin ? `
-            <select data-field="khaffiLahn" data-id="${student.id}" class="w-full mt-1 border rounded px-2 py-2">
-              ${[5, 4, 3, 2, 1].map(x => `<option value="${x}" ${x === (student.khaffiLahn || 5) ? 'selected' : ''}>${x}/5</option>`).join('')}
-            </select>
-          ` : `<div class="mt-1 bg-gray-200 rounded px-2 py-2">${(student.khaffiLahn || 5)} / 5</div>`}
-        </div>
-      </div>
-      ${isAdmin ? `
-        <button data-delete="${student.id}" class="w-full mt-4 bg-red-100 text-red-700 py-2 rounded hover:bg-red-200">حذف الطالب</button>
-      ` : ""}
-    `;
-        elements.studentsGrid.appendChild(card);
-      });
-
-      // Event listeners
-      document.querySelectorAll('input[data-field], select[data-field]').forEach(el => {
-        el.onchange = (e) => updateStudent(Number(el.dataset.id), el.dataset.field, el.value);
-      });
-      document.querySelectorAll('button[data-delete]').forEach(btn => {
-        btn.onclick = () => deleteStudent(Number(btn.dataset.delete));
-      });
-      document.querySelectorAll('.progress-bar').forEach(pb => {
-        const w = pb.style.width;
-        pb.style.width = '0%';
-        setTimeout(() => pb.style.width = w, 20);
-      });
-    }
-
-    // Start the app
-    init();
+    };
   </script>
 </body>
-
 </html>
