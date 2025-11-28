@@ -4,40 +4,31 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>حفاظ المبادئ / بكم نرتقي</title>
-   <link rel="icon" href="https://imgur.com/a/O3czENi">
-  <!-- Tailwind CDN for quick styling -->
+  <link rel="icon" href="D1BA629C-BE90-4B5A-8F99-9469DCB686E9.jpeg" sizes="32x32" type="image/jpeg">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    /* Small extra styles */
     .glass { background: rgba(255,255,255,0.6); backdrop-filter: blur(6px); }
-    .progress-bg { background: #e6e6e6; height: 8px; border-radius: 999px; overflow: hidden; }
+    .progress-bg { background: #e6e6e6; height: 6px; border-radius: 999px; overflow: hidden; }
     .progress-bar { background: #0b49f5; height: 100%; width: 0%; transition: width 400ms ease; }
-    .h2 {
-        color: gray;
-    }
   </style>
 </head>
 <body class="min-h-screen bg-gray-50 text-gray-800 font-sans">
+
   <div class="min-h-screen" id="app">
-    <!-- Navbar -->
     <nav class="bg-gray-900 text-gray-50 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="bg-amber-500 p-2 rounded-lg">
-            <!-- book icon -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6" />
             </svg>
           </div>
           <div>
             <h1 class="text-xl font-bold">متابعة حفاظ المبادئ</h1>
-            <p class="text-gray-400 text-sm">سورة البقرة وآل عمران</p>
+            <p class="text-gray-400 text-sm">حفظ القرآن الكريم كاملاً</p>
           </div>
         </div>
-
-        <div class="flex items-center gap-3">
-          <div id="admin-area"></div>
-        </div>
+        <div id="admin-area"></div>
       </div>
     </nav>
 
@@ -64,20 +55,23 @@
     </div>
 
     <main class="max-w-7xl mx-auto p-6">
-      <!-- Admin header actions -->
       <div id="adminHeader" class="hidden bg-gray-900 rounded-xl shadow-lg p-6 mb-6 text-gray-100">
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+          <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+            </svg>
             <span class="font-semibold">لوحة التحكم</span>
           </div>
-          <button id="addStudentBtn" class="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-gray-900 px-4 py-2 rounded-lg font-semibold"><span class="text-gray-500">إضافة طالب</span></button>
+          <button id="addStudentBtn" class="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-lg font-semibold">إضافة طالب</button>
         </div>
       </div>
 
-      <!-- View only notice -->
       <div id="viewerNotice" class="bg-amber-50 border-r-4 border-amber-600 rounded-lg p-5 mb-6">
         <div class="flex items-start gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-700 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-700 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
           <div>
             <h3 class="font-semibold text-gray-900 mb-1">وضع المشاهدة</h3>
             <p class="text-gray-700 text-sm">يمكنك مشاهدة تقييمات الطلاب فقط. للتعديل، يجب تسجيل الدخول كمسؤول.</p>
@@ -85,409 +79,345 @@
         </div>
       </div>
 
-      <!-- Statistics -->
       <div id="statsGrid" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6"></div>
 
-      <!-- Students Grid -->
       <div id="studentsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-      <!-- Empty state -->
       <div id="emptyState" class="hidden text-center py-16">
         <div class="bg-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 1.79-8 4v1h16v-1c0-2.21-3.582-4-8-4z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 1.79-8 4v1h16v-1c0-2.21-3.582-4-8-4z"/>
+          </svg>
         </div>
         <h3 class="text-xl font-bold text-gray-800 mb-2">لا يوجد طلاب</h3>
         <p class="text-gray-600 mb-4">قم بإضافة طلاب جدد للبدء في متابعة تقدمهم</p>
-        <button id="addFirstBtn" class="hidden bg-amber-600 hover:bg-amber-700 text-gray-900 px-6 py-3 rounded-lg font-semibold">إضافة أول طالب</button>
+        <button id="addFirstBtn" class="hidden bg-gray-600 hover:bg-gray-700 text-gray-100 px-6 py-3 rounded-lg font-semibold">إضافة أول طالب</button>
       </div>
     </main>
   </div>
 
-  <script>
-    // Data & Constants
-    const ADMIN_PASSWORD = 'spsadmin';
-    const surahInfo = { baqarah: { name: 'سورة البقرة', totalPages: 48 }, aleImran: { name: 'سورة آل عمران', totalPages: 37 } };
+<script>
+const quranSurahs = [
+  { n: "الفاتحة", p: 1 }, { n: "البقرة", p: 48 }, { n: "آل عمران", p: 37 }, { n: "النساء", p: 30 },
+  { n: "المائدة", p: 19 }, { n: "الأنعام", p: 27 }, { n: "الأعراف", p: 26 }, { n: "الأنفال", p: 10 },
+  { n: "التوبة", p: 22 }, { n: "يونس", p: 11 }, { n: "هود", p: 15 }, { n: "يوسف", p: 13 },
+  { n: "الرعد", p: 7 }, { n: "إبراهيم", p: 10 }, { n: "الحجر", p: 6 }, { n: "النحل", p: 14 },
+  { n: "الإسراء", p: 12 }, { n: "الكهف", p: 12 }, { n: "مريم", p: 11 }, { n: "طه", p: 12 },
+  { n: "الأنبياء", p: 11 }, { n: "الحج", p: 10 }, { n: "المؤمنون", p: 9 }, { n: "النور", p: 10 },
+  { n: "الفرقان", p: 10 }, { n: "الشعراء", p: 11 }, { n: "النمل", p: 9 }, { n: "القصص", p: 11 },
+  { n: "العنكبوت", p: 8 }, { n: "الروم", p: 8 }, { n: "لقمان", p: 4 }, { n: "السجدة", p: 3 },
+  { n: "الأحزاب", p: 10 }, { n: "سبأ", p: 6 }, { n: "فاطر", p: 5 }, { n: "يس", p: 5 },
+  { n: "الصافات", p: 5 }, { n: "ص", p: 3 }, { n: "الزمر", p: 8 }, { n: "غافر", p: 9 },
+  { n: "فصلت", p: 6 }, { n: "الشورى", p: 5 }, { n: "الزخرف", p: 5 }, { n: "الدخان", p: 3 },
+  { n: "الجاثية", p: 3 }, { n: "الأحقاف", p: 3 }, { n: "محمد", p: 4 }, { n: "الفتح", p: 4 },
+  { n: "الحجرات", p: 3 }, { n: "ق", p: 3 }, { n: "الذاريات", p: 3 }, { n: "الطور", p: 3 },
+  { n: "النجم", p: 2 }, { n: "القمر", p: 3 }, { n: "الرحمن", p: 3 }, { n: "الواقعة", p: 3 },
+  { n: "الحديد", p: 4 }, { n: "المجادلة", p: 2 }, { n: "الحشر", p: 3 }, { n: "الممتحنة", p: 3 },
+  { n: "الصف", p: 2 }, { n: "الجمعة", p: 2 }, { n: "المنافقون", p: 2 }, { n: "التغابن", p: 2 },
+  { n: "الطلاق", p: 2 }, { n: "التحريم", p: 2 }, { n: "الملك", p: 3 }, { n: "القلم", p: 3 },
+  { n: "الحاقة", p: 3 }, { n: "المعارج", p: 2 }, { n: "نوح", p: 2 }, { n: "الجن", p: 2 },
+  { n: "المزمل", p: 2 }, { n: "المدثر", p: 2 }, { n: "القيامة", p: 2 }, { n: "الإنسان", p: 2 },
+  { n: "المرسلات", p: 2 }, { n: "النبأ", p: 2 }, { n: "النازعات", p: 2 }, { n: "عبس", p: 2 },
+  { n: "التكوير", p: 1 }, { n: "الإنفطار", p: 1 }, { n: "المطففين", p: 2 }, { n: "الانشقاق", p: 1 },
+  { n: "البروج", p: 1 }, { n: "الطارق", p: 1 }, { n: "الأعلى", p: 1 }, { n: "الغاشية", p: 1 },
+  { n: "الفجر", p: 2 }, { n: "البلد", p: 1 }, { n: "الشمس", p: 1 }, { n: "الليل", p: 1 },
+  { n: "الضحى", p: 1 }, { n: "الشرح", p: 1 }, { n: "التين", p: 1 }, { n: "العلق", p: 1 },
+  { n: "القدر", p: 1 }, { n: "البينة", p: 2 }, { n: "الزلزلة", p: 1 }, { n: "العاديات", p: 1 },
+  { n: "القارعة", p: 1 }, { n: "التكاثر", p: 1 }, { n: "العصر", p: 1 }, { n: "الهمزة", p: 1 },
+  { n: "الفيل", p: 1 }, { n: "قريش", p: 1 }, { n: "الماعون", p: 1 }, { n: "الكوثر", p: 1 },
+  { n: "الكافرون", p: 1 }, { n: "النصر", p: 1 }, { n: "المسد", p: 1 }, { n: "الإخلاص", p: 1 },
+  { n: "الفلق", p: 1 }, { n: "الناس", p: 1 }
+];
 
-    // Elements
-    const adminArea = document.getElementById('admin-area');
-    const loginModal = document.getElementById('loginModal');
-    const adminPasswordInput = document.getElementById('adminPassword');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginCancel = document.getElementById('loginCancel');
-    const adminHeader = document.getElementById('adminHeader');
-    const viewerNotice = document.getElementById('viewerNotice');
-    const addStudentBtn = document.getElementById('addStudentBtn');
-    const addFirstBtn = document.getElementById('addFirstBtn');
-    const studentsGrid = document.getElementById('studentsGrid');
-    const statsGrid = document.getElementById('statsGrid');
-    const emptyState = document.getElementById('emptyState');
+const ADMIN_PASSWORD = "spsadmin";
+let isAdmin = false;
+let students = [];
 
-    // App state
-    let isAdmin = false;
-    let students = [];
+const elements = {
+  adminArea: document.getElementById("admin-area"),
+  loginModal: document.getElementById("loginModal"),
+  adminPassword: document.getElementById("adminPassword"),
+  loginBtn: document.getElementById("loginBtn"),
+  loginCancel: document.getElementById("loginCancel"),
+  adminHeader: document.getElementById("adminHeader"),
+  viewerNotice: document.getElementById("viewerNotice"),
+  addStudentBtn: document.getElementById("addStudentBtn"),
+  addFirstBtn: document.getElementById("addFirstBtn"),
+  studentsGrid: document.getElementById("studentsGrid"),
+  statsGrid: document.getElementById("statsGrid"),
+  emptyState: document.getElementById("emptyState")
+};
 
-    // Init
-    function init() {
-      loadStudents();
+// تقييمات المعلم
+const teacherGrades = [
+  { value: 100, label: "ممتاز ⭐⭐⭐⭐⭐", color: "text-green-600" },
+  { value: 90, label: "جيد جداً ⭐⭐⭐⭐", color: "text-green-500" },
+  { value: 80, label: "جيد ⭐⭐⭐", color: "text-blue-500" },
+  { value: 70, label: "مقبول ⭐⭐", color: "text-yellow-500" },
+  { value: 60, label: "ضعيف ⭐", color: "text-orange-500" },
+  { value: 50, label: "سيء", color: "text-red-500" }
+];
+
+function init() {
+  loadStudents();
+  renderNav();
+  render();
+  attachListeners();
+}
+
+async function loadStudents() {
+  try {
+    const response = await fetch('https://quranhifz.spsadmin.workers.dev/data');
+    if (response.ok) {
+      students = await response.json();
+    }
+  } catch (e) {
+    console.log('استخدام localStorage كبديل');
+    const saved = localStorage.getItem("quranStudents");
+    if (saved) students = JSON.parse(saved);
+  }
+  
+  students = students.map(s => ({ ...s }));
+}
+
+async function saveStudents() {
+  try {
+    await fetch('https://quranhifz.spsadmin.workers.dev/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(students)
+    });
+  } catch (e) {
+    localStorage.setItem("quranStudents", JSON.stringify(students));
+  }
+}
+
+function renderNav() {
+  elements.adminArea.innerHTML = "";
+  if (isAdmin) {
+    const span = document.createElement("span");
+    span.className = "text-gray-300 text-sm";
+    span.textContent = "وضع مسؤول";
+
+    const logoutBtn = document.createElement("button");
+    logoutBtn.className = "bg-gray-800 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-lg";
+    logoutBtn.textContent = "تسجيل الخروج";
+    logoutBtn.onclick = () => { isAdmin = false; renderNav(); render(); };
+    elements.adminArea.append(span, logoutBtn);
+  } else {
+    const loginBtnNav = document.createElement("button");
+    loginBtnNav.className = "bg-gray-600 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-lg font-semibold";
+    loginBtnNav.textContent = "تسجيل دخول";
+    loginBtnNav.onclick = showLogin;
+    elements.adminArea.append(loginBtnNav);
+  }
+}
+
+function showLogin() {
+  elements.loginModal.classList.remove("hidden");
+  elements.loginModal.classList.add("flex");
+  elements.adminPassword.focus();
+}
+
+function hideLogin() {
+  elements.loginModal.classList.add("hidden");
+  elements.loginModal.classList.remove("flex");
+  elements.adminPassword.value = "";
+}
+
+function attachListeners() {
+  elements.loginBtn.onclick = () => {
+    if (elements.adminPassword.value === ADMIN_PASSWORD) {
+      isAdmin = true;
+      hideLogin();
       renderNav();
       render();
-      attachListeners();
-    }
+    } else alert("كلمة المرور غير صحيحة");
+  };
+  elements.loginCancel.onclick = hideLogin;
+  elements.loginModal.onclick = (e) => { if (e.target === elements.loginModal) hideLogin(); };
+  elements.addStudentBtn.onclick = addNewStudent;
+  elements.addFirstBtn.onclick = addNewStudent;
+}
 
-    function loadStudents() {
-      const saved = localStorage.getItem('quranStudents');
-      if (saved) {
-        students = JSON.parse(saved);
+function addNewStudent() {
+  const surahState = {};
+  quranSurahs.forEach(s => surahState[s.n] = 0);
+
+  const newStudent = {
+    id: Date.now(),
+    name: "طالب جديد",
+    mem: surahState,
+    jalliLahn: 5,
+    khaffiLahn: 5,
+    teacherGrade: "جيد ⭐⭐⭐",
+    teacherGradeValue: 80
+  };
+  
+  students.push(newStudent);
+  saveStudents();
+  render();
+}
+
+function updateStudent(id, field, value) {
+  students = students.map(s => {
+    if (s.id === id) {
+      const updated = { ...s };
+      if (field.startsWith("surah_")) {
+        const name = field.replace("surah_", "");
+        updated.mem[name] = Number(value);
+      } else if (field === "teacherGrade") {
+        const grade = teacherGrades.find(g => g.label === value);
+        updated.teacherGrade = value;
+        updated.teacherGradeValue = grade ? grade.value : 80;
       } else {
-        saveStudents();
+        updated[field] = value;
       }
-      // compute scores
-      students = students.map(s => ({ ...s, finalScore: calculateFinalScore(s) }));
+      return updated;
     }
+    return s;
+  });
+  saveStudents();
+  render();
+}
 
-    function saveStudents() {
-      localStorage.setItem('quranStudents', JSON.stringify(students));
-    }
+function deleteStudent(id) {
+  if (!confirm("هل تريد حذف الطالب؟")) return;
+  students = students.filter(s => s.id !== id);
+  saveStudents();
+  render();
+}
 
-    // Login UI
-    function renderNav() {
-      adminArea.innerHTML = '';
-      if (isAdmin) {
-        const span = document.createElement('span');
-        span.className = 'text-gray-300 text-sm flex items-center gap-2';
-        span.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg> وضع المسؤول';
-        const logoutBtn = document.createElement('button');
-        logoutBtn.className = 'flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-100 px-4 py-2 rounded-lg transition-colors';
-        logoutBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"/></svg> تسجيل الخروج';
-        logoutBtn.onclick = () => { isAdmin = false; renderNav(); render(); };
-        adminArea.appendChild(span);
-        adminArea.appendChild(logoutBtn);
-      } else {
-        const loginBtnNav = document.createElement('button');
-        loginBtnNav.className = 'flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-gray-500 px-4 py-2 rounded-lg font-semibold transition-colors';
-        loginBtnNav.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0-1.105.895-2 2-2s2 .895 2 2v1H8v-1c0-1.105.895-2 2-2s2 .895 2 2z"/></svg> تسجيل دخول';
-        loginBtnNav.onclick = () => { showLogin(); };
-        adminArea.appendChild(loginBtnNav);
-      }
-    }
+function render() {
+  if (isAdmin) {
+    elements.adminHeader.classList.remove("hidden");
+    elements.viewerNotice.classList.add("hidden");
+  } else {
+    elements.adminHeader.classList.add("hidden");
+    elements.viewerNotice.classList.remove("hidden");
+  }
+  renderStats();
+  renderStudents();
+  elements.emptyState.classList.toggle("hidden", students.length > 0);
+}
 
-    function showLogin() {
-      loginModal.classList.remove('hidden');
-      loginModal.classList.add('flex');
-      adminPasswordInput.focus();
-    }
+function renderStats() {
+  if (!students.length) { 
+    elements.statsGrid.innerHTML = ""; 
+    return; 
+  }
+  const total = students.length;
+  const avgScore = students.reduce((a,b)=>a+(b.teacherGradeValue||0),0)/total;
+  elements.statsGrid.innerHTML = `
+    <div class="bg-white p-6 shadow rounded-xl border text-center">
+      <p class="text-gray-600 text-sm">عدد الطلاب</p>
+      <p class="text-3xl font-bold">${total}</p>
+    </div>
+    <div class="bg-white p-6 shadow rounded-xl border text-center">
+      <p class="text-gray-600 text-sm">متوسط التقدير</p>
+      <p class="text-3xl font-bold">${avgScore.toFixed(1)}</p>
+    </div>
+  `;
+}
 
-    function hideLogin() {
-      loginModal.classList.add('hidden');
-      loginModal.classList.remove('flex');
-      adminPasswordInput.value = '';
-    }
+function renderSurahSection(student) {
+  return `
+    <details class="bg-gray-50 rounded-lg border p-4">
+      <summary class="cursor-pointer text-lg font-bold text-gray-800 mb-2">حفظ السور</summary>
+      <div class="max-h-64 overflow-y-auto mt-3 pr-2 space-y-3">
+        ${quranSurahs.map(surah => {
+          const memVal = student.mem[surah.n] || 0;
+          return `
+            <div class="border-b pb-2">
+              <div class="flex justify-between mb-1">
+                <span class="font-semibold text-gray-800">${surah.n}</span>
+                <span class="text-gray-600 text-sm">${memVal} / ${surah.p}</span>
+              </div>
+              ${isAdmin ? `
+                <select data-field="surah_${surah.n}" data-id="${student.id}" class="w-full border rounded px-3 py-2 bg-white">
+                  ${Array.from({length: surah.p + 1}, (_, i) => i).map(x => 
+                    `<option value="${x}" ${x === memVal ? 'selected' : ''}>${x} صفحة</option>`
+                  ).join('')}
+                </select>
+              ` : `
+                <div class="bg-gray-200 px-3 py-2 rounded text-gray-700 text-sm">${memVal} صفحة</div>
+              `}
+              <div class="progress-bg mt-1">
+                <div class="progress-bar" style="width:${(memVal/surah.p)*100}%"></div>
+              </div>
+            </div>`;
+        }).join("")}
+      </div>
+    </details>
+  `;
+}
 
-    // Listeners
-    function attachListeners() {
-      loginBtn.addEventListener('click', () => {
-        const val = adminPasswordInput.value.trim();
-        if (val === ADMIN_PASSWORD) {
-          isAdmin = true; hideLogin(); renderNav(); render();
-        } else {
-          alert('كلمة المرور غير صحيحة');
-        }
-      });
-
-      loginCancel.addEventListener('click', hideLogin);
-
-      addStudentBtn && addStudentBtn.addEventListener('click', addNewStudent);
-      addFirstBtn.addEventListener('click', addNewStudent);
-
-      // close modal on backdrop click
-      loginModal.addEventListener('click', (e) => { if (e.target === loginModal) hideLogin(); });
-    }
-
-    // CRUD
-    function addNewStudent() {
-      const newStudent = { id: Date.now(), name: 'طالب جديد', baqarahPages: 0, aleImranPages: 0, jalliLahn: 5, khaffiLahn: 5, finalScore: 0 };
-      newStudent.finalScore = calculateFinalScore(newStudent);
-      students.push(newStudent);
-      saveStudents();
-      render();
-    }
-
-    function deleteStudent(id) {
-      if (!confirm('هل أنت متأكد من حذف هذا الطالب؟')) return;
-      students = students.filter(s => s.id !== id);
-      saveStudents();
-      render();
-    }
-
-    function updateStudent(id, field, value) {
-      students = students.map(s => {
-        if (s.id === id) {
-          const updated = { ...s, [field]: value };
-          updated.finalScore = calculateFinalScore(updated);
-          return updated;
-        }
-        return s;
-      });
-      saveStudents();
-      render();
-    }
-
-    // Calculations
-    function calculateFinalScore(student) {
-      const baqarahPercentage = (student.baqarahPages / surahInfo.baqarah.totalPages) * 40;
-      const aleImranPercentage = (student.aleImranPages / surahInfo.aleImran.totalPages) * 40;
-      const jalliScore = (student.jalliLahn / 5) * 10;
-      const khaffiScore = (student.khaffiLahn / 5) * 10;
-      return Number((baqarahPercentage + aleImranPercentage + jalliScore + khaffiScore).toFixed(1));
-    }
-
-    function getScoreGrade(score) {
-      if (score >= 90) return { label: 'ممتاز', color: 'text-amber-600' };
-      if (score >= 80) return { label: 'جيد جداً', color: 'text-amber-700' };
-      if (score >= 70) return { label: 'جيد', color: 'text-gray-600' };
-      if (score >= 60) return { label: 'مقبول', color: 'text-gray-500' };
-      return { label: 'ضعيف', color: 'text-gray-400' };
-    }
-
-    // Renderers
-    function render() {
-      renderHeader();
-      renderStats();
-      renderStudents();
-      renderEmptyState();
-    }
-
-    function renderHeader() {
-      if (isAdmin) {
-        adminHeader.classList.remove('hidden');
-        viewerNotice.classList.add('hidden');
-        addFirstBtn.classList.remove('hidden');
-        addFirstBtn.onclick = addNewStudent;
-      } else {
-        adminHeader.classList.add('hidden');
-        viewerNotice.classList.remove('hidden');
-      }
-    }
-
-    function renderStats() {
-      if (students.length === 0) { statsGrid.innerHTML = ''; return; }
-      const totalStudents = students.length;
-      const avgScore = (students.reduce((acc, s) => acc + calculateFinalScore(s), 0) / students.length) || 0;
-      const topStudents = students.filter(s => calculateFinalScore(s) >= 85).length;
-      const avgMem = (students.reduce((acc, s) => acc + ((s.baqarahPages + s.aleImranPages) / (surahInfo.baqarah.totalPages + surahInfo.aleImran.totalPages)) * 100, 0) / students.length) || 0;
-
-      statsGrid.innerHTML = `
-        <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-600 text-sm mb-1">إجمالي الطلاب</p>
-              <p class="text-3xl font-bold text-gray-900">${totalStudents}</p>
-            </div>
-            <div class="bg-amber-100 p-3 rounded-lg">
-              <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 text-amber-700\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"/></svg>
-            </div>
-          </div>
+function renderStudents() {
+  elements.studentsGrid.innerHTML = "";
+  students.forEach(student => {
+    const card = document.createElement("div");
+    card.className = "bg-white rounded-xl shadow border p-5";
+    
+    const gradeInfo = teacherGrades.find(g => g.label === student.teacherGrade) || teacherGrades[2];
+    
+    card.innerHTML = `
+      <div class="flex justify-between mb-4">
+        ${isAdmin ? `
+          <input type="text" value="${student.name}" data-field="name" data-id="${student.id}" class="bg-gray-100 border px-3 py-2 rounded w-1/2">
+        ` : `
+          <h2 class="text-xl font-bold">${student.name}</h2>
+        `}
+        <div class="text-right">
+          <p class="text-sm text-gray-500">تقدير من المعلم</p>
+          ${isAdmin ? `
+            <select data-field="teacherGrade" data-id="${student.id}" class="text-lg font-bold ${gradeInfo.color}">
+              ${teacherGrades.map(g => `<option value="${g.label}" ${g.label === student.teacherGrade ? 'selected' : ''}>${g.label}</option>`).join('')}
+            </select>
+          ` : `
+            <p class="text-2xl font-bold ${gradeInfo.color}">${student.teacherGrade || 'جيد ⭐⭐⭐'}</p>
+          `}
         </div>
-
-        <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-600 text-sm mb-1">متوسط التقدير</p>
-              <p class="text-3xl font-bold text-gray-900">${avgScore.toFixed(1)}</p>
-            </div>
-            <div class="bg-amber-100 p-3 rounded-lg">
-              <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 text-amber-700\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 3v18h18\"/></svg>
-            </div>
-          </div>
+      </div>
+      ${renderSurahSection(student)}
+      <div class="grid grid-cols-2 gap-4 mt-6">
+        <div>
+          <label class="text-sm text-gray-700">اللحن الجلي</label>
+          ${isAdmin ? `
+            <select data-field="jalliLahn" data-id="${student.id}" class="w-full mt-1 border rounded px-2 py-2">
+              ${[5,4,3,2,1].map(x=>`<option value="${x}" ${x===(student.jalliLahn||5)?'selected':''}>${x}/5</option>`).join('')}
+            </select>
+          ` : `<div class="mt-1 bg-gray-200 rounded px-2 py-2">${(student.jalliLahn||5)} / 5</div>`}
         </div>
-
-        <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-600 text-sm mb-1">الطلاب المتفوقون</p>
-              <p class="text-3xl font-bold text-gray-900">${topStudents}</p>
-            </div>
-            <div class="bg-amber-100 p-3 rounded-lg">
-              <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 text-amber-700\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8c-1.657 0-3 1.343-3 3v4h6v-4c0-1.657-1.343-3-3-3z\"/></svg>
-            </div>
-          </div>
+        <div>
+          <label class="text-sm text-gray-700">اللحن الخفي</label>
+          ${isAdmin ? `
+            <select data-field="khaffiLahn" data-id="${student.id}" class="w-full mt-1 border rounded px-2 py-2">
+              ${[5,4,3,2,1].map(x=>`<option value="${x}" ${x===(student.khaffiLahn||5)?'selected':''}>${x}/5</option>`).join('')}
+            </select>
+          ` : `<div class="mt-1 bg-gray-200 rounded px-2 py-2">${(student.khaffiLahn||5)} / 5</div>`}
         </div>
+      </div>
+      ${isAdmin ? `
+        <button data-delete="${student.id}" class="w-full mt-4 bg-red-100 text-red-700 py-2 rounded hover:bg-red-200">حذف الطالب</button>
+      ` : ""}
+    `;
+    elements.studentsGrid.appendChild(card);
+  });
 
-        <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-600 text-sm mb-1">متوسط الحفظ</p>
-              <p class="text-3xl font-bold text-gray-900">${Math.round(avgMem)}%</p>
-            </div>
-            <div class="bg-amber-100 p-3 rounded-lg">
-              <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 text-amber-700\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 12h18\"/></svg>
-            </div>
-          </div>
-        </div>
-      `;
-    }
+  document.querySelectorAll('input[data-field], select[data-field]').forEach(el => {
+    el.onchange = (e) => updateStudent(Number(el.dataset.id), el.dataset.field, el.value);
+  });
+  document.querySelectorAll('button[data-delete]').forEach(btn => {
+    btn.onclick = () => deleteStudent(Number(btn.dataset.delete));
+  });
+  document.querySelectorAll('.progress-bar').forEach(pb => {
+    const w = pb.style.width;
+    pb.style.width = '0%';
+    setTimeout(()=>pb.style.width = w, 20);
+  });
+}
 
-    function renderStudents() {
-      studentsGrid.innerHTML = '';
-      students.forEach(student => {
-        const finalScore = calculateFinalScore(student);
-        const grade = getScoreGrade(finalScore);
-        const baqarahProgress = Math.min(100, (student.baqarahPages / surahInfo.baqarah.totalPages) * 100);
-        const aleImranProgress = Math.min(100, (student.aleImranPages / surahInfo.aleImran.totalPages) * 100);
-
-        const card = document.createElement('div');
-        card.className = 'bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-200 overflow-hidden';
-        card.innerHTML = `
-          <div class="bg-gray-900 p-5 text-gray-100">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-3 flex-1">
-                <div class="bg-amber-500 p-2 rounded-lg">
-                  <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5 text-gray-900\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5.121 17.804A9 9 0 1119.879 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z\"/></svg>
-                </div>
-                <div class=\"flex-1\">${
-                  isAdmin ? `<input type=\"text\" value=\"${escapeHtml(student.name)}\" class=\"bg-gray-800 text-gray-100 px-3 py-2 rounded-lg border border-gray-700 focus:border-amber-500 outline-none w-full\" data-field=\"name\" data-id=\"${student.id}\">` : `<h3 class=\"text-stone-100 font-bold text-lg\">${escapeHtml(student.name)}</h3>`
-                }</div>
-              </div>
-            </div>
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-400 text-xs mb-1">التقدير النهائي</p>
-                <p class="text-3xl font-bold text-amber-400">${finalScore}</p>
-              </div>
-              <div class="text-left">
-                <p class="${grade.color} font-bold text-lg">${grade.label}</p>
-                <div class="flex gap-1 mt-1">
-                  ${[0,1,2,3,4].map(i => `<div class=\"w-2 h-2 rounded-full ${i < Math.round(finalScore / 20) ? 'bg-amber-500' : 'bg-gray-700'}\"></div>`).join('')}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-5 space-y-4">
-            <!-- Baqarah -->
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <label class="text-gray-900 font-semibold text-sm">سورة البقرة</label>
-                <span class="text-gray-600 text-xs">${student.baqarahPages} / ${surahInfo.baqarah.totalPages}</span>
-              </div>
-              ${isAdmin ? renderSelectHtml(student.id, 'baqarahPages', surahInfo.baqarah.totalPages, student.baqarahPages) : `<div class=\"px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700\">${student.baqarahPages === 0 ? 'لم يبدأ' : student.baqarahPages + ' صفحة'}</div>`}
-              <div class="mt-2 progress-bg"><div class="progress-bar" style="width:${baqarahProgress}%"></div></div>
-            </div>
-
-            <!-- AleImran -->
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <label class="text-gray-900 font-semibold text-sm">سورة آل عمران</label>
-                <span class="text-gray-600 text-xs">${student.aleImranPages} / ${surahInfo.aleImran.totalPages}</span>
-              </div>
-              ${isAdmin ? renderSelectHtml(student.id, 'aleImranPages', surahInfo.aleImran.totalPages, student.aleImranPages) : `<div class=\"px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700\">${student.aleImranPages === 0 ? 'لم يبدأ' : student.aleImranPages + ' صفحة'}</div>`}
-              <div class="mt-2 progress-bg"><div class="progress-bar" style="width:${aleImranProgress}%"></div></div>
-            </div>
-
-            <!-- Lahn ratings -->
-            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-200">
-              <div>
-                <label class="text-gray-700 text-xs font-semibold block mb-2">اللحن الجلي</label>
-                ${isAdmin ? renderRatingSelect(student.id, 'jalliLahn', student.jalliLahn) : `<div class=\"px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 text-sm\">${student.jalliLahn} / 5</div>`}
-              </div>
-              <div>
-                <label class="text-gray-700 text-xs font-semibold block mb-2">اللحن الخفي</label>
-                ${isAdmin ? renderRatingSelect(student.id, 'khaffiLahn', student.khaffiLahn) : `<div class=\"px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 text-sm\">${student.khaffiLahn} / 5</div>`}
-              </div>
-            </div>
-
-            ${isAdmin ? `<button data-delete=\"${student.id}\" class=\"w-full mt-2 bg-red-50 hover:bg-red-100 text-red-700 py-2 rounded-lg text-sm font-semibold transition-colors border border-red-200\">حذف الطالب</button>` : ''}
-          </div>
-        `;
-
-        studentsGrid.appendChild(card);
-      });
-
-      // attach dynamic listeners for inputs/selects/delete
-      // name inputs
-      document.querySelectorAll('input[data-field="name"]').forEach(inp => {
-        inp.addEventListener('change', (e) => {
-          const id = Number(e.target.dataset.id);
-          updateStudent(id, 'name', e.target.value);
-        });
-      });
-
-      // selects
-      document.querySelectorAll('select[data-field]').forEach(sel => {
-        sel.addEventListener('change', (e) => {
-          const id = Number(e.target.dataset.id);
-          const field = e.target.dataset.field;
-          const value = Number(e.target.value);
-          updateStudent(id, field, value);
-        });
-      });
-
-      // delete buttons
-      document.querySelectorAll('button[data-delete]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = Number(e.target.dataset.delete);
-          deleteStudent(id);
-        });
-      });
-
-      // animate progress bars
-      document.querySelectorAll('.progress-bar').forEach(pb => {
-        // width already set inline; reflow to trigger transition
-        const w = pb.style.width;
-        pb.style.width = '0%';
-        setTimeout(() => pb.style.width = w, 20);
-      });
-    }
-
-    function renderEmptyState() {
-      if (students.length === 0) {
-        emptyState.classList.remove('hidden');
-      } else {
-        emptyState.classList.add('hidden');
-      }
-    }
-
-    // Helpers to create small HTML pieces inside template strings
-    function renderSelectHtml(id, field, max, value) {
-      let opts = '';
-      for (let i = 0; i <= max; i++) {
-        opts += `<option value=\"${i}\">${i === 0 ? 'لم يبدأ' : i + ' صفحة'}</option>`;
-      }
-      return `<select data-field=\"${field}\" data-id=\"${id}\" class=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-amber-500 outline-none text-stone-900 bg-white\">${opts}</select>`;
-    }
-
-    function renderRatingSelect(id, field, value) {
-      let opts = '';
-      [5,4,3,2,1].forEach(rating => { opts += `<option value=\"${rating}\">${rating} / 5</option>`; });
-      return `<select data-field=\"${field}\" data-id=\"${id}\" class=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-amber-500 outline-none text-sm bg-white\">${opts}</select>`;
-    }
-
-    // small escaping for HTML injection safety
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    // Set initial selected values after rendering selects
-    // We'll observe DOM changes and set values accordingly
-    const observer = new MutationObserver(() => {
-      document.querySelectorAll('select[data-field]').forEach(sel => {
-        const id = Number(sel.dataset.id);
-        const field = sel.dataset.field;
-        const student = students.find(s => s.id === id);
-        if (!student) return;
-        const val = student[field];
-        if (sel.value != val) sel.value = val;
-      });
-    });
-    observer.observe(document.getElementById('studentsGrid'), { childList: true, subtree: true });
-
-    // initialize
-    init();
-  </script>
+init();
+</script>
 </body>
 </html>
