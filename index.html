@@ -211,16 +211,15 @@
     async function initFirebase() {
       try {
         // ضع هنا إعدادات Firebase الخاصة بك
-        const firebaseConfig = {
-          apiKey: "AIzaSyC7Wfg0e28Rwimo961pEQ47ADVOEqRTuOg",
-          authDomain: "sps123-39a27.firebaseapp.com",
-          projectId: "sps123-39a27",
-          storageBucket: "sps123-39a27.firebasestorage.app",
-          messagingSenderId: "205575189302",
-          appId: "1:205575189302:web:11463a8f03eddc3193b997",
-          measurementId: "G-5NEDDQW6DB"
-        };
-
+const firebaseConfig = {
+  apiKey: "AIzaSyC7Wfg0e28Rwimo961pEQ47ADVOEqRTuOg",
+  authDomain: "sps123-39a27.firebaseapp.com",
+  projectId: "sps123-39a27",
+  storageBucket: "sps123-39a27.firebasestorage.app",
+  messagingSenderId: "205575189302",
+  appId: "1:205575189302:web:11463a8f03eddc3193b997",
+  measurementId: "G-5NEDDQW6DB"
+};
         const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js');
         const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js');
 
